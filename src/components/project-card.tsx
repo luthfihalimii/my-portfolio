@@ -27,6 +27,7 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
 interface Props {
   title: string;
   href?: string;
+  category?: string;
   description: string;
   dates: string;
   tags: readonly string[];
@@ -37,18 +38,21 @@ interface Props {
     type: string;
     href: string;
   }[];
+  onOpenDetails?: () => void;
   className?: string;
 }
 
 export function ProjectCard({
   title,
   href,
+  category,
   description,
   dates,
   tags,
   image,
   video,
   links,
+  onOpenDetails,
   className,
 }: Props) {
   return (
@@ -106,18 +110,36 @@ export function ProjectCard({
       <div className="p-6 flex flex-col gap-3 flex-1">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-1">
-            <h3 className="font-semibold">{title}</h3>
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="font-semibold">{title}</h3>
+              {category && (
+                <Badge variant="secondary" className="h-5 text-[10px]">
+                  {category}
+                </Badge>
+              )}
+            </div>
             <time className="text-xs text-muted-foreground">{dates}</time>
           </div>
-          <a
-            href={href || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
-            aria-label={`Open ${title}`}
-          >
-            <ArrowUpRight className="h-4 w-4" aria-hidden />
-          </a>
+          {onOpenDetails ? (
+            <button
+              type="button"
+              onClick={onOpenDetails}
+              className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              aria-label={`View ${title} details`}
+            >
+              <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </button>
+          ) : (
+            <a
+              href={href || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+              aria-label={`Open ${title}`}
+            >
+              <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </a>
+          )}
         </div>
         <div className="text-xs flex-1 prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
           <p>{description}</p>

@@ -9,6 +9,7 @@ import {
 import { DATA } from "@/data/resume";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { usePortfolioLanguage } from "@/lib/portfolio-language";
 
 function LogoImage({ src, alt }: { src: string; alt: string }) {
   const [imageError, setImageError] = useState(false);
@@ -32,9 +33,14 @@ function LogoImage({ src, alt }: { src: string; alt: string }) {
 }
 
 export default function WorkSection() {
+  const { localized } = usePortfolioLanguage();
+
   return (
     <Accordion type="single" collapsible className="w-full grid gap-6">
-      {DATA.work.map((work) => (
+      {DATA.work.map((work, index) => {
+        const localizedWork = localized.work[index];
+
+        return (
         <AccordionItem
           key={work.company}
           value={work.company}
@@ -66,22 +72,23 @@ export default function WorkSection() {
                     </span>
                   </div>
                   <div className="font-sans text-sm text-muted-foreground">
-                    {work.title}
+                    {localizedWork?.title ?? work.title}
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
                 <span>
-                  {work.start} - {work.end ?? DATA.sections.work.presentLabel}
+                  {work.start} - {work.end ?? localized.workPresentLabel}
                 </span>
               </div>
             </div>
           </AccordionTrigger>
           <AccordionContent className="p-0 ml-13 text-xs sm:text-sm text-muted-foreground">
-            {work.description}
+            {localizedWork?.description ?? work.description}
           </AccordionContent>
         </AccordionItem>
-      ))}
+        );
+      })}
     </Accordion>
   );
 }

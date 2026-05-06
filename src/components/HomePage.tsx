@@ -1,37 +1,50 @@
 import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { DATA } from "@/data/resume";
 import AchievementsSection from "@/components/section/achievements-section";
+import CaseStudiesSection from "@/components/section/case-studies-section";
+import CertificationsSection from "@/components/section/certifications-section";
 import ContactSection from "@/components/section/contact-section";
+import NowSection from "@/components/section/now-section";
 import PhotosSection from "@/components/section/photos-section";
 import ProjectsSection from "@/components/section/projects-section";
+import ServicesSection from "@/components/section/services-section";
+import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
-import { ArrowUpRight } from "lucide-react";
+import { localizedPortfolioContent, portfolioCopy, usePortfolioLanguage } from "@/lib/portfolio-language";
+import { ArrowDownRight, ArrowUpRight, Download } from "lucide-react";
 
 const BLUR_FADE_DELAY = 0.04;
+type PortfolioCopy = (typeof portfolioCopy)[keyof typeof portfolioCopy];
+type LocalizedPortfolioContent =
+  (typeof localizedPortfolioContent)[keyof typeof localizedPortfolioContent];
 
-const sectionComponents: Record<string, React.ReactNode> = {
+const createSectionComponents = (
+  copy: PortfolioCopy,
+  localized: LocalizedPortfolioContent
+): Record<string, React.ReactNode> => ({
   about: (
     <section id="about">
       <div className="flex min-h-0 flex-col gap-y-4">
         <BlurFade delay={BLUR_FADE_DELAY * 3}>
-          <h2 className="text-xl font-bold">{DATA.sections.about.heading}</h2>
+          <h2 className="text-xl font-bold">{copy.sections.about.heading}</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 4}>
           <div className="prose max-w-full text-pretty font-sans leading-relaxed text-muted-foreground dark:prose-invert">
-            <p>{DATA.summary}</p>
+            <p>{localized.summary}</p>
           </div>
         </BlurFade>
       </div>
     </section>
   ),
+  now: <NowSection />,
   work: (
     <section id="work">
       <div className="flex min-h-0 flex-col gap-y-6">
         <BlurFade delay={BLUR_FADE_DELAY * 5}>
-          <h2 className="text-xl font-bold">{DATA.sections.work.heading}</h2>
+          <h2 className="text-xl font-bold">{copy.sections.work.heading}</h2>
         </BlurFade>
         <BlurFade delay={BLUR_FADE_DELAY * 6}>
           <WorkSection />
@@ -43,7 +56,7 @@ const sectionComponents: Record<string, React.ReactNode> = {
     <section id="education">
       <div className="flex min-h-0 flex-col gap-y-6">
         <BlurFade delay={BLUR_FADE_DELAY * 7}>
-          <h2 className="text-xl font-bold">{DATA.sections.education.heading}</h2>
+          <h2 className="text-xl font-bold">{copy.sections.education.heading}</h2>
         </BlurFade>
         <div className="flex flex-col gap-8">
           {DATA.education.map((education, index) => (
@@ -84,38 +97,11 @@ const sectionComponents: Record<string, React.ReactNode> = {
       </div>
     </section>
   ),
-  skills: (
-    <section id="skills">
-      <div className="flex min-h-0 flex-col gap-y-4">
-        <BlurFade delay={BLUR_FADE_DELAY * 9}>
-          <h2 className="text-xl font-bold">{DATA.sections.skills.heading}</h2>
-        </BlurFade>
-        <div className="flex flex-wrap gap-2">
-          {DATA.skills.map((skill, id) => (
-            <BlurFade key={skill.name} delay={BLUR_FADE_DELAY * 10 + id * 0.05}>
-              <div className="border bg-background border-border ring-2 ring-border/20 rounded-xl h-8 w-fit px-4 flex items-center gap-2">
-                <img
-                  src={skill.imageUrl}
-                  alt=""
-                  loading="lazy"
-                  decoding="async"
-                  className="size-4 rounded overflow-hidden object-contain"
-                />
-                <span className="text-foreground text-sm font-medium">{skill.name}</span>
-              </div>
-            </BlurFade>
-          ))}
-        </div>
-      </div>
-    </section>
-  ),
-  projects: (
-    <section id="projects">
-      <BlurFade delay={BLUR_FADE_DELAY * 11}>
-        <ProjectsSection />
-      </BlurFade>
-    </section>
-  ),
+  skills: <SkillsSection />,
+  services: <ServicesSection />,
+  caseStudies: <CaseStudiesSection />,
+  projects: <ProjectsSection />,
+  certifications: <CertificationsSection />,
   achievements: (
     <section id="achievements">
       <BlurFade delay={BLUR_FADE_DELAY * 13}>
@@ -124,16 +110,12 @@ const sectionComponents: Record<string, React.ReactNode> = {
     </section>
   ),
   photos: <PhotosSection />,
-  contact: (
-    <section id="contact">
-      <BlurFade delay={BLUR_FADE_DELAY * 16}>
-        <ContactSection />
-      </BlurFade>
-    </section>
-  ),
-};
+  contact: <ContactSection />,
+});
 
 export default function HomePage() {
+  const { copy, localized } = usePortfolioLanguage();
+  const sectionComponents = createSectionComponents(copy, localized);
   const orderedSections = Object.entries(DATA.sections)
     .filter(([key, s]) => s.enabled && (key !== "achievements" || DATA.achievements.length > 0))
     .sort(([, a], [, b]) => a.order - b.order)
@@ -149,19 +131,39 @@ export default function HomePage() {
                 delay={BLUR_FADE_DELAY}
                 className="text-3xl font-semibold tracking-tighter sm:text-4xl lg:text-5xl"
                 yOffset={8}
-                text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
+                text={`${copy.heroGreeting} ${DATA.name.split(" ")[0]}`}
               />
               <BlurFadeText
                 className="text-muted-foreground max-w-[600px] md:text-lg lg:text-xl"
                 delay={BLUR_FADE_DELAY}
-                text={DATA.description}
+                text={localized.description}
               />
+              <BlurFade delay={BLUR_FADE_DELAY * 2}>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <Button asChild size="sm">
+                    <a href={DATA.resumeUrl} download>
+                      <Download className="mr-1.5 size-4" aria-hidden />
+                      {copy.downloadCv}
+                    </a>
+                  </Button>
+                  <Button asChild size="sm" variant="outline">
+                    <a href="#projects">
+                      <ArrowDownRight className="mr-1.5 size-4" aria-hidden />
+                      {copy.viewProjects}
+                    </a>
+                  </Button>
+                </div>
+              </BlurFade>
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
-              <Avatar className="size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                <AvatarFallback>{DATA.initials}</AvatarFallback>
-              </Avatar>
+              <img
+                src={DATA.avatarUrl}
+                alt={DATA.name}
+                width={128}
+                height={128}
+                decoding="async"
+                className="size-24 md:size-32 shrink-0 rounded-full border object-cover shadow-lg ring-4 ring-muted"
+              />
             </BlurFade>
           </div>
         </div>

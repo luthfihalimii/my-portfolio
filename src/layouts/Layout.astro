@@ -3,7 +3,6 @@ import "../styles/global.css";
 import { DATA } from "@/data/resume";
 import { CONFIG } from "@/data/config";
 import NavbarIsland from "@/components/NavbarIsland";
-import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 
 interface Props {
   title?: string;
@@ -12,6 +11,7 @@ interface Props {
   canonicalURL?: string;
   robots?: string;
   ogType?: "website" | "article";
+  containerClass?: string;
 }
 
 const {
@@ -21,6 +21,7 @@ const {
   canonicalURL = Astro.url.href,
   robots = CONFIG.seo.robots,
   ogType = "website",
+  containerClass = "max-w-2xl",
 } = Astro.props;
 
 const pageTitle = title
@@ -34,6 +35,33 @@ const ogImage = image
 
 const { light, dark, radius } = CONFIG.theme;
 const { baseFontSize } = CONFIG.typography;
+const structuredData = JSON.stringify([
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: DATA.name,
+    jobTitle: DATA.role,
+    url: DATA.url,
+    image: `${CONFIG.site.url}${DATA.avatarUrl}`,
+    email: DATA.contact.email,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: DATA.location,
+      addressCountry: "ID",
+    },
+    sameAs: Object.values(DATA.contact.social)
+      .map((social) => social.url)
+      .filter((url) => url.startsWith("http")),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: `${DATA.name} Portfolio`,
+    url: CONFIG.site.url,
+    inLanguage: CONFIG.site.locale,
+    description: DATA.description,
+  },
+]);
 ---
 
 <html
@@ -143,28 +171,17 @@ const { baseFontSize } = CONFIG.typography;
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured data -->
+    <script is:inline type="application/ld+json" set:html={structuredData}></script>
   </head>
   <body class="min-h-screen bg-background font-sans antialiased relative">
-    <!-- FlickeringGrid header background - matches template exactly -->
-    <div class="absolute inset-0 top-0 left-0 right-0 h-25 overflow-hidden z-0">
-      <FlickeringGrid
-        client:idle
-        className="h-full w-full"
-        squareSize={2}
-        gridGap={2}
-        style={{
-          maskImage: "linear-gradient(to bottom, black, transparent)",
-          WebkitMaskImage: "linear-gradient(to bottom, black, transparent)",
-        }}
-      />
-    </div>
+    <div class="portfolio-grid-backdrop absolute inset-x-0 top-0 h-25 overflow-hidden z-0" aria-hidden="true"></div>
 
-    <!-- Main content wrapper - matches template's z-10 container exactly -->
-    <div class="relative z-10 max-w-2xl mx-auto py-12 pb-24 sm:py-24 px-6">
+    <div class={`relative z-10 ${containerClass} mx-auto py-12 pb-24 sm:py-24 px-6`}>
       <slot />
     </div>
 
-    <!-- Navbar: ThemeProvider + TooltipProvider + Navbar all in one React island -->
-    <NavbarIsland client:idle />
+    <NavbarIsland client:only="react" />
   </body>
 </html>

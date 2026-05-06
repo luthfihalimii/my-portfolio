@@ -1,26 +1,32 @@
-import { useState, type ComponentProps } from "react";
-import { Copy, Check } from "lucide-react";
-import { Button } from "../ui/button";
+import type { ComponentProps } from "react";
 import { cn } from "@/lib/utils";
 
 type CodeBlockProps = ComponentProps<"pre"> & {
   "data-title"?: string;
+  tabindex?: string | number;
 };
 
-export function CodeBlock({ children, ...props }: CodeBlockProps) {
-  const [copied, setCopied] = useState(false);
-  const title = props["data-title"];
+function normalizeTabIndex(value: string | number | undefined) {
+  if (typeof value === "number") {
+    return value;
+  }
 
-  const handleCopy = async () => {
-    const text = (document.activeElement?.closest(".group")?.querySelector("code")?.textContent) ?? "";
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // ignore
-    }
-  };
+  if (typeof value === "string" && value.trim() !== "") {
+    const numericValue = Number(value);
+    return Number.isNaN(numericValue) ? undefined : numericValue;
+  }
+
+  return undefined;
+}
+
+export function CodeBlock({
+  children,
+  tabIndex,
+  tabindex,
+  ...props
+}: CodeBlockProps) {
+  const title = props["data-title"];
+  const normalizedTabIndex = tabIndex ?? normalizeTabIndex(tabindex);
 
   return (
     <div className="group relative rounded-xl overflow-hidden border border-border my-6">
@@ -29,19 +35,22 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
           {title}
         </div>
       )}
-      <Button
-        onClick={handleCopy}
-        variant="outline"
-        size="icon"
+      <button
+        type="button"
+        data-copy-code
         className={cn(
-          "absolute size-8 text-primary cursor-pointer right-3 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity rounded-md border border-border shadow-none",
+          "absolute h-8 px-2 text-xs font-medium text-primary cursor-pointer right-3 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity rounded-md border border-border bg-background shadow-none",
           title ? "top-13" : "top-3"
         )}
         aria-label="Copy code"
       >
-        {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
-      </Button>
-      <pre {...props} className={cn("p-4 m-0! overflow-x-auto text-sm", props.className)}>
+        Copy
+      </button>
+      <pre
+        {...props}
+        tabIndex={normalizedTabIndex}
+        className={cn("p-4 m-0! overflow-x-auto text-sm", props.className)}
+      >
         {children}
       </pre>
     </div>

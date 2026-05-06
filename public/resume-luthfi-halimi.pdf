@@ -1,0 +1,73 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 876 >>
+stream
+BT
+/F1 12 Tf
+72 760 Td
+16 TL
+/F1 20 Tf
+(Luthfi Halimi) Tj
+T*
+/F1 12 Tf
+(DevSecOps Engineer) Tj
+T*
+(Sidoarjo, Indonesia) Tj
+T*
+(contact@luthfihalimi.my.id | github.com/luthfihalimii | linkedin.com/in/luthfihalimi) Tj
+T*
+() Tj
+T*
+(Summary) Tj
+T*
+(DevSecOps engineer focused on secure infrastructure, reliable deployment workflows, and practical full-stack delivery.) Tj
+T*
+() Tj
+T*
+(Experience) Tj
+T*
+(PT. Piramida Teknologi Informasi - Fullstack Developer Intern \(Agustus 2025 - Sekarang\)) Tj
+T*
+(PT. Inti Cakrawala Citra - Customer Support Intern \(April 2024 - Mei 2024\)) Tj
+T*
+() Tj
+T*
+(Education) Tj
+T*
+(SMKN 1 Surabaya - Rekayasa Perangkat Lunak \(2023 - 2026\)) Tj
+T*
+(Politeknik Elektronika Negeri Surabaya - Teknik Telekomunikasi \(2026 - 2030\)) Tj
+T*
+() Tj
+T*
+(Skills) Tj
+T*
+(Linux, Bash, PHP, TypeScript, Node.js, Python, Go, PostgreSQL, Docker, Kubernetes) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000311 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1238
+%%EOF

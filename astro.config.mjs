@@ -28,6 +28,32 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      force: true,
+      exclude: [
+        'astro:content',
+        'astro/content/runtime',
+      ],
+      include: [
+        'motion/react',
+        'lucide-react',
+        'next-themes',
+        '@radix-ui/react-avatar',
+        '@radix-ui/react-tooltip',
+        '@radix-ui/react-slot',
+        'class-variance-authority',
+      ],
+    },
+    ssr: {
+      optimizeDeps: {
+        noDiscovery: true,
+        include: [],
+        exclude: [
+          'astro:content',
+          'astro/content/runtime',
+        ],
+      },
+    },
   },
 
   integrations: [

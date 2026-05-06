@@ -4,7 +4,7 @@ export const CONFIG = {
   // ---------------------------------------------------------------------------
   site: {
     url: "https://luthfihalimi.my.id",
-    locale: "en_US",
+    locale: "id_ID",
     twitterHandle: "@luthfihalimi",
   },
 

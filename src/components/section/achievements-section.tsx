@@ -2,8 +2,11 @@
 import { Badge } from "@/components/ui/badge";
 import { DATA } from "@/data/resume";
 import { Timeline, TimelineItem, TimelineConnectItem } from "@/components/timeline";
+import { usePortfolioLanguage } from "@/lib/portfolio-language";
 
 export default function AchievementsSection() {
+  const { copy, localized } = usePortfolioLanguage();
+
   if (DATA.achievements.length === 0) {
     return null;
   }
@@ -15,19 +18,22 @@ export default function AchievementsSection() {
           <div className="flex items-center w-full">
             <div className="flex-1 h-px bg-linear-to-r from-transparent from-5% via-border via-95% to-transparent" />
             <div className="border bg-primary z-10 rounded-xl px-4 py-1">
-              <span className="text-background text-sm font-medium">{DATA.sections.achievements.label}</span>
+              <span className="text-background text-sm font-medium">{copy.sections.achievements.label}</span>
             </div>
             <div className="flex-1 h-px bg-linear-to-l from-transparent from-5% via-border via-95% to-transparent" />
           </div>
           <div className="flex flex-col gap-y-3 items-center justify-center">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">{DATA.sections.achievements.heading}</h2>
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">{copy.sections.achievements.heading}</h2>
             <p className="text-muted-foreground md:text-lg/relaxed lg:text-base/relaxed xl:text-lg/relaxed text-balance text-center">
-              {DATA.sections.achievements.text}
+              {copy.sections.achievements.text}
             </p>
           </div>
         </div>
         <Timeline>
-          {DATA.achievements.map((achievement) => (
+          {DATA.achievements.map((achievement, index) => {
+            const localizedAchievement = localized.achievements[index] ?? achievement;
+
+            return (
             <TimelineItem key={achievement.title + achievement.date} className="w-full flex items-start justify-between gap-10">
               <TimelineConnectItem className="flex items-start justify-center">
                 {achievement.image ? (
@@ -47,14 +53,14 @@ export default function AchievementsSection() {
                   <time className="text-xs text-muted-foreground">{achievement.date}</time>
                 )}
                 {achievement.title && (
-                  <h3 className="font-semibold leading-none">{achievement.title}</h3>
+                  <h3 className="font-semibold leading-none">{localizedAchievement.title}</h3>
                 )}
                 {achievement.issuer && (
-                  <p className="text-sm text-muted-foreground">{achievement.issuer}</p>
+                  <p className="text-sm text-muted-foreground">{localizedAchievement.issuer}</p>
                 )}
                 {achievement.description && (
                   <p className="text-sm text-muted-foreground leading-relaxed wrap-break-word">
-                    {achievement.description}
+                    {localizedAchievement.description}
                   </p>
                 )}
                 {achievement.links && achievement.links.length > 0 && (
@@ -76,7 +82,8 @@ export default function AchievementsSection() {
                 )}
               </div>
             </TimelineItem>
-          ))}
+            );
+          })}
         </Timeline>
       </div>
     </div>
