@@ -1,12 +1,6 @@
 import { useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import { DATA } from "@/data";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { usePortfolioLanguage } from "@/lib/portfolio-language";
 
@@ -37,59 +31,42 @@ export default function WorkSection() {
   const { localized } = usePortfolioLanguage();
 
   return (
-    <Accordion type="single" collapsible className="w-full grid gap-6">
+    <div className="w-full grid gap-6">
       {DATA.work.map((work, index) => {
         const localizedWork = localized.work[index];
 
         return (
-        <AccordionItem
-          key={work.company}
-          value={work.company}
-          className="w-full border-b-0 grid gap-2"
-        >
-          <AccordionTrigger className="hover:no-underline p-0 cursor-pointer transition-colors rounded-none group [&>svg]:hidden">
-            <div className="flex items-center gap-x-3 justify-between w-full text-left">
-              <div className="flex items-center gap-x-3 flex-1 min-w-0">
-                <LogoImage src={work.logoUrl} alt={work.company} />
-                <div className="flex-1 min-w-0 gap-0.5 flex flex-col">
-                  <div className="font-semibold leading-none flex items-center gap-2">
-                    {work.company}
-                    <span className="relative inline-flex items-center w-3.5 h-3.5">
-                      <ChevronRight
-                        className={cn(
-                          "absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-300 ease-out",
-                          "translate-x-0 opacity-0",
-                          "group-hover:translate-x-1 group-hover:opacity-100",
-                          "group-data-[state=open]:opacity-0 group-data-[state=open]:translate-x-0"
-                        )}
-                      />
-                      <ChevronDown
-                        className={cn(
-                          "absolute h-3.5 w-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-200",
-                          "opacity-0 rotate-0",
-                          "group-data-[state=open]:opacity-100 group-data-[state=open]:rotate-180"
-                        )}
-                      />
-                    </span>
-                  </div>
-                  <div className="font-sans text-sm text-muted-foreground">
-                    {localizedWork?.title ?? work.title}
-                  </div>
+        <details key={work.company} name="work-experience" className="w-full grid gap-2 group">
+          <summary className="flex items-center gap-x-3 justify-between w-full text-left hover:no-underline p-0 cursor-pointer transition-colors rounded-none list-none [&::-webkit-details-marker]:hidden">
+            <div className="flex items-center gap-x-3 flex-1 min-w-0">
+              <LogoImage src={work.logoUrl} alt={work.company} />
+              <div className="flex-1 min-w-0 gap-0.5 flex flex-col">
+                <div className="font-semibold leading-none flex items-center gap-2">
+                  {work.company}
+                  <ChevronDown
+                    className={cn(
+                      "size-3.5 shrink-0 text-muted-foreground stroke-2 transition-all duration-200",
+                      "group-open:rotate-180"
+                    )}
+                  />
+                </div>
+                <div className="font-sans text-sm text-muted-foreground">
+                  {localizedWork?.title ?? work.title}
                 </div>
               </div>
-              <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
-                <span>
-                  {work.start} - {work.end ?? localized.workPresentLabel}
-                </span>
-              </div>
             </div>
-          </AccordionTrigger>
-          <AccordionContent className="p-0 ml-13 text-xs sm:text-sm text-muted-foreground">
+            <div className="flex items-center gap-1 text-xs tabular-nums text-muted-foreground text-right flex-none">
+              <span>
+                {work.start} - {work.end ?? localized.workPresentLabel}
+              </span>
+            </div>
+          </summary>
+          <div className="p-0 ml-13 pt-2 text-xs sm:text-sm text-muted-foreground">
             {localizedWork?.description ?? work.description}
-          </AccordionContent>
-        </AccordionItem>
+          </div>
+        </details>
         );
       })}
-    </Accordion>
+    </div>
   );
 }

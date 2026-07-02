@@ -38,10 +38,6 @@ export default defineConfig({
         'motion/react',
         'lucide-react',
         'next-themes',
-        '@radix-ui/react-avatar',
-        '@radix-ui/react-tooltip',
-        '@radix-ui/react-slot',
-        'class-variance-authority',
       ],
     },
     ssr: {

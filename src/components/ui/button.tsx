@@ -1,4 +1,3 @@
-import { Slot } from "@radix-ui/react-slot";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
@@ -29,9 +28,15 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : "button";
+    if (asChild) {
+      const child = React.Children.only(props.children as React.ReactNode);
+      return React.cloneElement(child as React.ReactElement, {
+        className: cn(baseStyles, variantStyles[variant], sizeStyles[size], className),
+        ref,
+      });
+    }
     return (
-      <Comp
+      <button
         className={cn(baseStyles, variantStyles[variant], sizeStyles[size], className)}
         ref={ref}
         {...props}

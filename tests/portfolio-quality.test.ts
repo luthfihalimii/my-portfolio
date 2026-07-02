@@ -131,8 +131,6 @@ describe("portfolio production hygiene", () => {
       "motion/react",
       "lucide-react",
       "next-themes",
-      "@radix-ui/react-tooltip",
-      "@radix-ui/react-slot",
     ]) {
       expect(astroConfig).toContain(dependency);
     }

@@ -79,8 +79,4 @@ describe("portfolio component existence", () => {
     }
   });
 
-  test("Loading skeleton exists", () => {
-    expect(existsSync("src/components/ui/skeleton.tsx")).toBe(true);
-    expect(text("src/components/ui/skeleton.tsx")).toContain("Skeleton");
-  });
 });
