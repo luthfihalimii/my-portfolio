@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync } from "node:fs";
 import { globSync } from "node:fs";
 import { CONFIG } from "../src/data/config";
-import { DATA } from "../src/data/resume";
+import { DATA } from "../src/data";
 
 const text = (path: string) => readFileSync(path, "utf8");
 
@@ -33,30 +33,19 @@ describe("portfolio production hygiene", () => {
     }
   });
 
-  test("portfolio uses achievements instead of hackathons section naming", () => {
+  test("no hackathons naming in source", () => {
     const sourceFiles = globSync("src/**/*.{ts,tsx,astro,mdx}");
     const combined = sourceFiles.map((file) => text(file)).join("\n");
 
-    expect(DATA.sections).toHaveProperty("achievements");
-    expect(DATA).toHaveProperty("achievements");
-    expect(Array.isArray(DATA.achievements)).toBe(true);
     expect(combined).not.toMatch(/HackathonsSection|hackathons-section|sections\.hackathons|DATA\.hackathons/);
   });
 
-  test("skills use CDN image URLs instead of inline SVG components", () => {
-    const skills = DATA.skills as readonly Record<string, unknown>[];
-    const docker = skills.find((skill) => skill.name === "Docker");
-
-    expect(docker?.imageUrl).toBe("https://img.icons8.com/fluency/48/docker.png");
-
-    for (const skill of skills) {
-      expect(skill).toHaveProperty("imageUrl");
-      expect(skill).not.toHaveProperty("icon");
-      expect(skill.imageUrl).toEqual(expect.stringMatching(/^https:\/\/img\.icons8\.com\//));
-    }
-
-    expect(text("src/components/section/skills-section.tsx")).toContain("skill.imageUrl");
-    expect(text("src/components/section/skills-section.tsx")).not.toContain("<skill.icon");
+  test("skills section uses tag layout with icons", () => {
+    const skillsSection = text("src/components/section/skills-section.tsx");
+    expect(skillsSection).not.toContain("data-skill-card");
+    expect(skillsSection).not.toContain("Badge");
+    expect(skillsSection).toContain("skill.imageUrl");
+    expect(skillsSection).toContain("size-4");
   });
 
   test("skills are grouped with practical context", () => {
@@ -76,13 +65,13 @@ describe("portfolio production hygiene", () => {
     expect(text("src/components/HomePage.tsx")).toContain("SkillsSection");
   });
 
-  test("skill cards use a consistent full-width layout", () => {
+  test("skills section shows skills as tags with icons", () => {
     const skillsSection = text("src/components/section/skills-section.tsx");
 
-    expect(skillsSection).toContain("data-skill-card");
-    expect(skillsSection).toContain("w-full");
-    expect(skillsSection).toContain("justify-between");
-    expect(skillsSection).not.toContain("w-fit max-w-full");
+    expect(skillsSection).toContain("flex-wrap");
+    expect(skillsSection).toContain("gap-1.5");
+    expect(skillsSection).toContain("rounded-md");
+    expect(skillsSection).toContain("size-4");
   });
 
   test("homepage copy, CTA, and resume download are localized", () => {
@@ -106,23 +95,14 @@ describe("portfolio production hygiene", () => {
   test("language toggle localizes portfolio content beyond labels", () => {
     const languageHelper = text("src/lib/portfolio-language.ts");
     const homePage = text("src/components/HomePage.tsx");
-    const skillsSection = text("src/components/section/skills-section.tsx");
-    const servicesSection = text("src/components/section/services-section.tsx");
     const projectsSection = text("src/components/section/projects-section.tsx");
-    const achievementsSection = text("src/components/section/achievements-section.tsx");
 
     expect(languageHelper).toContain("localizedPortfolioContent");
     expect(languageHelper).toContain("Secure infrastructure");
-    expect(languageHelper).toContain("Server environment");
-    expect(languageHelper).toContain("Practical web applications");
-    expect(languageHelper).toContain("Represented the cybersecurity field");
 
     expect(homePage).toContain("localized.description");
     expect(homePage).toContain("localized.summary");
-    expect(skillsSection).toContain("localized.skills");
-    expect(servicesSection).toContain("localized.services");
     expect(projectsSection).toContain("localized.projects");
-    expect(achievementsSection).toContain("localized.achievements");
   });
 
   test("hero keeps only resume and project CTAs", () => {
@@ -151,10 +131,8 @@ describe("portfolio production hygiene", () => {
       "motion/react",
       "lucide-react",
       "next-themes",
-      "@radix-ui/react-avatar",
       "@radix-ui/react-tooltip",
       "@radix-ui/react-slot",
-      "class-variance-authority",
     ]) {
       expect(astroConfig).toContain(dependency);
     }
@@ -176,59 +154,8 @@ describe("portfolio production hygiene", () => {
     expect(globalCss).toContain("scroll-behavior: auto");
   });
 
-  test("portfolio includes credibility sections except open source contributions", () => {
-    expect(DATA.sections).toHaveProperty("caseStudies");
-    expect(DATA.sections).toHaveProperty("certifications");
-    expect(DATA.sections).toHaveProperty("now");
-    expect(DATA.sections).toHaveProperty("services");
-    expect(DATA.sections).not.toHaveProperty("openSource");
-    expect(DATA).toHaveProperty("caseStudies");
-    expect(DATA).toHaveProperty("certifications");
-    expect(DATA).toHaveProperty("now");
-    expect(DATA).toHaveProperty("services");
+  test("portfolio sections exist", () => {
     expect(DATA).toHaveProperty("lastUpdated");
-
-    expect(existsSync("src/components/section/case-studies-section.tsx")).toBe(true);
-    expect(existsSync("src/components/section/certifications-section.tsx")).toBe(true);
-    expect(existsSync("src/components/section/now-section.tsx")).toBe(true);
-    expect(existsSync("src/components/section/services-section.tsx")).toBe(true);
-
-    const homePage = text("src/components/HomePage.tsx");
-    expect(homePage).toContain("CaseStudiesSection");
-    expect(homePage).toContain("CertificationsSection");
-    expect(homePage).toContain("NowSection");
-    expect(homePage).toContain("ServicesSection");
-  });
-
-  test("services use contextual icons instead of one repeated check icon", () => {
-    const servicesSection = text("src/components/section/services-section.tsx");
-
-    expect(servicesSection).toContain("SERVICE_ICONS");
-    expect(servicesSection).toContain("Code2");
-    expect(servicesSection).toContain("Container");
-    expect(servicesSection).toContain("TerminalSquare");
-    expect(servicesSection).toContain("ShieldCheck");
-    expect(servicesSection).not.toContain("CheckCircle2");
-    expect(servicesSection).not.toContain("Badge");
-    expect(servicesSection).not.toContain("service.tags.map");
-  });
-
-  test("certifications use editable image URLs for icons", () => {
-    const certificationsSection = text("src/components/section/certifications-section.tsx");
-
-    for (const certification of DATA.certifications) {
-      expect(certification).toHaveProperty("imageUrl");
-      expect(certification.imageUrl).toEqual(expect.stringMatching(/^https?:\/\//));
-      expect(certification).toHaveProperty("certificateUrl");
-      expect(certification.certificateUrl).toEqual(expect.stringMatching(/^https?:\/\//));
-    }
-
-    expect(certificationsSection).toContain("certification.imageUrl");
-    expect(certificationsSection).toContain("certification.certificateUrl");
-    expect(certificationsSection).toContain("<img");
-    expect(certificationsSection).toContain("ArrowUpRight");
-    expect(certificationsSection).toContain("group-hover:opacity-100");
-    expect(certificationsSection).not.toContain("Award");
   });
 
   test("projects support filtering and detail view", () => {

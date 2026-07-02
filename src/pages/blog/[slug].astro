@@ -2,21 +2,11 @@
 export const prerender = true;
 import Layout from "@/layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
-import { DATA } from "@/data/resume";
+import { DATA } from "@/data";
 import { formatDate } from "@/lib/utils";
+import { getReadingTime } from "@/lib/reading-time";
 import { mdxComponents } from "@/mdx-components";
-
-const WORDS_PER_MINUTE = 220;
-
-function getReadingTime(body?: string) {
-  const words = (body ?? "")
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/<[^>]+>/g, " ")
-    .split(/\s+/)
-    .filter(Boolean).length;
-
-  return Math.max(1, Math.ceil(words / WORDS_PER_MINUTE));
-}
+import Giscus from "@/components/mdx/giscus";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -240,6 +230,8 @@ const jsonLd = JSON.stringify({
             <img
               src={DATA.avatarUrl}
               alt={authorName}
+              width={64}
+              height={64}
               class="size-16 rounded-2xl border border-border object-cover"
               loading="lazy"
               decoding="async"
@@ -264,6 +256,8 @@ const jsonLd = JSON.stringify({
             </a>
           </div>
         </section>
+
+        <Giscus client:only="react" />
 
         {
           relatedPosts.length > 0 && (
@@ -367,48 +361,7 @@ const jsonLd = JSON.stringify({
       }
     </div>
 
-    <script is:inline>
-      const progressBar = document.querySelector("[data-reading-progress]");
-      const article = document.querySelector("[data-reading-article]");
-
-      function updateReadingProgress() {
-        if (!progressBar || !article) return;
-
-        const rect = article.getBoundingClientRect();
-        const articleTop = window.scrollY + rect.top;
-        const scrollableDistance = article.scrollHeight - window.innerHeight;
-        const currentPosition = window.scrollY - articleTop;
-        const progress =
-          scrollableDistance <= 0
-            ? 1
-            : Math.min(Math.max(currentPosition / scrollableDistance, 0), 1);
-
-        progressBar.style.transform = `scaleX(${progress})`;
-      }
-
-      updateReadingProgress();
-      window.addEventListener("scroll", updateReadingProgress, {
-        passive: true,
-      });
-      window.addEventListener("resize", updateReadingProgress);
-
-      document.addEventListener("click", async function (event) {
-        var button = event.target && event.target.closest("[data-copy-code]");
-        if (!button) return;
-
-        var container = button.closest(".group");
-        var code = container && container.querySelector("code");
-        var text = code && code.textContent;
-        if (!text || !navigator.clipboard) return;
-
-        try {
-          await navigator.clipboard.writeText(text);
-          button.textContent = "Copied";
-          window.setTimeout(function () {
-            button.textContent = "Copy";
-          }, 1600);
-        } catch (_) {}
-      });
-    </script>
+    <script is:inline src="/scripts/reading-progress.js"></script>
+    <script is:inline src="/scripts/copy-code.js" defer></script>
   </section>
 </Layout>

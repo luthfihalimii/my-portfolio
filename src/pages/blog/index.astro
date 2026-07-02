@@ -4,7 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import BlogList from "@/components/BlogList";
 import { getCollection } from "astro:content";
 import { paginate, normalizePage } from "@/lib/pagination";
-
+import { getReadingTime } from "@/lib/reading-time";
 import { CONFIG } from "@/data/config";
 
 const PAGE_SIZE = CONFIG.blog.postsPerPage;
@@ -27,6 +27,8 @@ const posts = paginatedPosts.map((post) => ({
   id: post.id,
   title: post.data.title,
   publishedAt: post.data.publishedAt,
+  readingTime: getReadingTime(post.body),
+  category: post.data.category,
 }));
 ---
 

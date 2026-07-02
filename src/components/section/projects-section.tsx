@@ -1,7 +1,7 @@
 import BlurFade from "@/components/magicui/blur-fade";
 import { ProjectCard } from "@/components/project-card";
 import { Badge } from "@/components/ui/badge";
-import { DATA } from "@/data/resume";
+import { DATA } from "@/data";
 import { usePortfolioLanguage } from "@/lib/portfolio-language";
 import { X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";

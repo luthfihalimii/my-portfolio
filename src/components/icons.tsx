@@ -1,10 +1,6 @@
-import { GlobeIcon, MailIcon } from "lucide-react";
-
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
-  globe: (props: IconProps) => <GlobeIcon {...props} />,
-  email: (props: IconProps) => <MailIcon {...props} />,
   linkedin: (props: IconProps) => (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
       <title>LinkedIn</title>
@@ -172,6 +168,12 @@ export const Icons = {
         fill="#ffba00"
       />
     </svg>
+  ),
+  signal: ({ className, ..._props }: IconProps) => (
+    <>
+      <img src="/signal-icon-black.png" alt="Signal" className={`${className} dark:hidden`} />
+      <img src="/signal-icon-white.png" alt="Signal" className={`${className} hidden dark:block`} />
+    </>
   ),
   whatsapp: (props: IconProps) => (
     <svg

@@ -1,9 +1,16 @@
-/* eslint-disable @next/next/no-img-element */
-
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import { useState } from "react";
+
+const TAG_ICONS: Record<string, string> = {
+  Astro: "https://cdn.simpleicons.org/astro",
+  React: "https://img.icons8.com/color/48/react-native.png",
+  TypeScript: "https://img.icons8.com/color/48/typescript.png",
+  "Tailwind CSS": "https://img.icons8.com/color/48/tailwindcss.png",
+  MDX: "https://img.icons8.com/color/48/markdown.png",
+  "Cloudflare Workers": "https://img.icons8.com/color/48/cloudflare.png",
+};
 
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const [imageError, setImageError] = useState(false);
@@ -149,9 +156,12 @@ export function ProjectCard({
             {tags.map((tag) => (
               <Badge
                 key={tag}
-                className="text-[11px] font-medium border border-border h-6 w-fit px-2"
+                className="text-[11px] font-medium border border-border h-6 w-fit px-2 gap-1"
                 variant="outline"
               >
+                {TAG_ICONS[tag] && (
+                  <img src={TAG_ICONS[tag]} alt="" width={14} height={14} loading="lazy" decoding="async" className="size-3.5" />
+                )}
                 {tag}
               </Badge>
             ))}

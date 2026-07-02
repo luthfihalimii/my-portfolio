@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { DATA } from "@/data/resume";
+import { DATA } from "@/data";
 import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 

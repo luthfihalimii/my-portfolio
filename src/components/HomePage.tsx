@@ -2,15 +2,11 @@ import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { Button } from "@/components/ui/button";
-import { DATA } from "@/data/resume";
-import AchievementsSection from "@/components/section/achievements-section";
-import CaseStudiesSection from "@/components/section/case-studies-section";
-import CertificationsSection from "@/components/section/certifications-section";
+import { DATA } from "@/data";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { LanguageProvider } from "@/lib/language-context";
 import ContactSection from "@/components/section/contact-section";
-import NowSection from "@/components/section/now-section";
-import PhotosSection from "@/components/section/photos-section";
 import ProjectsSection from "@/components/section/projects-section";
-import ServicesSection from "@/components/section/services-section";
 import SkillsSection from "@/components/section/skills-section";
 import WorkSection from "@/components/section/work-section";
 import { localizedPortfolioContent, portfolioCopy, usePortfolioLanguage } from "@/lib/portfolio-language";
@@ -39,7 +35,6 @@ const createSectionComponents = (
       </div>
     </section>
   ),
-  now: <NowSection />,
   work: (
     <section id="work">
       <div className="flex min-h-0 flex-col gap-y-6">
@@ -98,26 +93,15 @@ const createSectionComponents = (
     </section>
   ),
   skills: <SkillsSection />,
-  services: <ServicesSection />,
-  caseStudies: <CaseStudiesSection />,
   projects: <ProjectsSection />,
-  certifications: <CertificationsSection />,
-  achievements: (
-    <section id="achievements">
-      <BlurFade delay={BLUR_FADE_DELAY * 13}>
-        <AchievementsSection />
-      </BlurFade>
-    </section>
-  ),
-  photos: <PhotosSection />,
   contact: <ContactSection />,
 });
 
-export default function HomePage() {
+function HomePageContent() {
   const { copy, localized } = usePortfolioLanguage();
   const sectionComponents = createSectionComponents(copy, localized);
   const orderedSections = Object.entries(DATA.sections)
-    .filter(([key, s]) => s.enabled && (key !== "achievements" || DATA.achievements.length > 0))
+    .filter(([, s]) => s.enabled)
     .sort(([, a], [, b]) => a.order - b.order)
     .map(([key]) => key);
 
@@ -169,10 +153,18 @@ export default function HomePage() {
         </div>
       </section>
       {orderedSections.map((key) => (
-        <React.Fragment key={key}>
+        <ErrorBoundary key={key}>
           {sectionComponents[key]}
-        </React.Fragment>
+        </ErrorBoundary>
       ))}
     </main>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <LanguageProvider>
+      <HomePageContent />
+    </LanguageProvider>
   );
 }

@@ -8,6 +8,8 @@ interface Post {
   id: string;
   title: string;
   publishedAt: string;
+  readingTime: number;
+  category: string;
 }
 
 interface Pagination {
@@ -73,9 +75,15 @@ export default function BlogList({ posts, allPostsCount, pagination, pageSize }:
                             </span>
                           </span>
                         </p>
-                        <p className="text-xs text-muted-foreground">
-                          {post.publishedAt}
-                        </p>
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                          <span>{post.publishedAt}</span>
+                          <span aria-hidden className="text-[10px]">&#183;</span>
+                          <span>{post.readingTime} min read</span>
+                          <span aria-hidden className="text-[10px]">&#183;</span>
+                          <span className="rounded-full border border-border px-2 py-0.5">
+                            {post.category}
+                          </span>
+                        </div>
                       </div>
                     </a>
                   </div>

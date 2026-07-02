@@ -40,23 +40,6 @@ export function paginate<T>(
   };
 }
 
-export function getPaginationMeta(
-  totalItems: number,
-  options: PaginationOptions
-) {
-  const { page, pageSize } = options;
-  const totalPages = Math.ceil(totalItems / pageSize);
-
-  return {
-    page,
-    pageSize,
-    totalItems,
-    totalPages,
-    hasNextPage: page < totalPages,
-    hasPreviousPage: page > 1,
-  };
-}
-
 export function normalizePage(page: number | string | undefined, maxPage: number): number {
   if (typeof page === "string") {
     const parsed = parseInt(page, 10);

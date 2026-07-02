@@ -1,4 +1,4 @@
-import { DATA } from "@/data/resume";
+import { DATA } from "@/data";
 import { usePortfolioLanguage } from "@/lib/portfolio-language";
 
 export default function ContactSection() {
@@ -7,6 +7,7 @@ export default function ContactSection() {
     DATA.contact.social.email,
     DATA.contact.social.LinkedIn,
     DATA.contact.social.GitHub,
+    DATA.contact.social.Signal,
   ];
 
   return (
