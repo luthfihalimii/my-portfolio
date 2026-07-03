@@ -108,20 +108,22 @@ const createSectionComponents = (
         <p className="mx-auto max-w-lg text-muted-foreground text-balance">
           {copy.sections.donation.text}
         </p>
-        <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
-          <a href="https://trakteer.id/mindofluthfi" target="_blank" rel="noopener noreferrer"
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-            <svg viewBox="0 0 24 24" className="size-4" fill="currentColor" aria-hidden>
-              <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 110-16 8 8 0 010 16zm1-12h-2v4H7v2h4v4h2v-4h4v-2h-4V8z" />
-            </svg>
-            Trakteer
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+          <a href="https://trakteer.id/mindofluthfi" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://edge-cdn.trakteer.id/images/embed/trbtn-red-1.png?v=14-05-2025"
+              height="40"
+              style={{ border: 0, height: 40 }}
+              alt="Trakteer Saya"
+            />
           </a>
-          <a href="https://ko-fi.com/mindofluthfi" target="_blank" rel="noopener noreferrer"
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-            <svg viewBox="0 0 24 24" className="size-4" fill="currentColor" aria-hidden>
-              <path d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-.215 1.472-1.241 1.619-1.241 1.619H5.985s-1.072-.224-1.072-1.654c0-1.432.054-5.339.054-5.339h6.594s1.521-.005 1.613 1.261c.092 1.267.26 2.858-.351 3.113z" />
-            </svg>
-            Ko-fi
+          <a href="https://ko-fi.com/mindofluthfi" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://storage.ko-fi.com/cdn/kofi_stroke_cup.svg"
+              height="36"
+              style={{ border: 0, height: 36 }}
+              alt="Ko-fi"
+            />
           </a>
         </div>
       </div>
