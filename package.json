@@ -46,7 +46,6 @@
     "wrangler": "^4.106.0"
   },
   "overrides": {
-    "vite": "^7",
     "yaml": "^2.8.3"
   },
   "devDependencies": {
