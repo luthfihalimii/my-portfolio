@@ -31,6 +31,7 @@ export const portfolioCopy = {
         label: "Contact",
         heading: "Mari Terhubung",
         text: "Tertarik diskusi deployment, backend, security hardening, atau kesempatan internship DevSecOps? Kirim email atau hubungi saya lewat LinkedIn.",
+        support: "Dukung saya dengan traktiran kopi :)",
       },
     },
     projectFilters: {
@@ -66,6 +67,7 @@ export const portfolioCopy = {
         label: "Contact",
         heading: "Let's connect",
         text: "Interested in deployment, backend, security hardening, or DevSecOps internship opportunities? Reach me by email or LinkedIn.",
+        support: "Support me with a cup of coffee :)",
       },
     },
     projectFilters: {
