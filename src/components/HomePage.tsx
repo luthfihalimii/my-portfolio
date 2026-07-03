@@ -95,6 +95,40 @@ const createSectionComponents = (
   skills: <SkillsSection />,
   projects: <ProjectsSection />,
   contact: <ContactSection />,
+  donation: (
+    <section id="donation" className="border rounded-xl p-10 relative">
+      <div className="absolute -top-4 border bg-primary z-10 rounded-xl px-4 py-1 left-1/2 -translate-x-1/2">
+        <span className="text-background text-sm font-medium">{copy.sections.donation.label}</span>
+      </div>
+      <div className="portfolio-grid-backdrop absolute inset-x-0 top-0 h-1/2 rounded-xl overflow-hidden" aria-hidden="true" />
+      <div className="relative flex flex-col items-center gap-4 text-center">
+        <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+          {copy.sections.donation.heading}
+        </h2>
+        <p className="mx-auto max-w-lg text-muted-foreground text-balance">
+          {copy.sections.donation.text}
+        </p>
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+          <a href="https://trakteer.id/mindofluthfi" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://edge-cdn.trakteer.id/images/embed/trbtn-red-1.png?v=14-05-2025"
+              height="40"
+              style={{ border: 0, height: 40 }}
+              alt="Trakteer Saya"
+            />
+          </a>
+          <a href="https://ko-fi.com/mindofluthfi" target="_blank" rel="noopener noreferrer">
+            <img
+              src="https://storage.ko-fi.com/cdn/kofi_stroke_cup.svg"
+              height="36"
+              style={{ border: 0, height: 36 }}
+              alt="Ko-fi"
+            />
+          </a>
+        </div>
+      </div>
+    </section>
+  ),
 });
 
 function HomePageContent() {

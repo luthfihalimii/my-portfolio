@@ -75,6 +75,13 @@ export const sections = {
     heading: "Mari Terhubung",
     text: "Tertarik diskusi deployment, backend, security hardening, atau kesempatan internship DevSecOps? Kirim email atau hubungi saya lewat LinkedIn.",
   },
+  donation: {
+    order: 13,
+    enabled: true,
+    label: "Donasi",
+    heading: "Dukung Saya",
+    text: "Jika kamu merasa terbantu dengan konten atau karya saya, boleh traktir kopi atau donasi lewat platform berikut. Apapun dukunganmu sangat berarti!",
+  },
 } as const;
 
 export const navbar = [

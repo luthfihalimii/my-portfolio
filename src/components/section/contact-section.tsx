@@ -42,17 +42,6 @@ export default function ContactSection() {
             );
           })}
         </div>
-        <div className="mt-6 flex flex-col items-center gap-2">
-          <p className="text-xs text-muted-foreground">{copy.sections.contact.support}</p>
-          <a href="https://trakteer.id/mindofluthfi" target="_blank" rel="noopener noreferrer">
-            <img
-              src="https://edge-cdn.trakteer.id/images/embed/trbtn-red-1.png?v=14-05-2025"
-              height="40"
-              style={{ border: 0, height: 40 }}
-              alt="Trakteer Saya"
-            />
-          </a>
-        </div>
       </div>
     </section>
   );
