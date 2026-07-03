@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 export type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
@@ -171,17 +169,12 @@ export const Icons = {
       />
     </svg>
   ),
-  signal: ({ className, ..._props }: IconProps) => {
-    const [mounted, setMounted] = useState(false);
-    const [theme, setTheme] = useState("light");
-    useEffect(() => {
-      const stored = localStorage.getItem("theme") || "light";
-      setTheme(stored);
-      setMounted(true);
-    }, []);
-    const src = !mounted ? "/signal-black.png" : theme === "dark" ? "/signal-white.png" : "/signal-black.png";
-    return <img src={src} alt="Signal" className={className} />;
-  },
+  signal: ({ className, ..._props }: IconProps) => (
+    <picture>
+      <source srcSet="/signal-white.png" media="(prefers-color-scheme: dark)" />
+      <img src="/signal-black.png" alt="Signal" className={className} />
+    </picture>
+  ),
   whatsapp: (props: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
